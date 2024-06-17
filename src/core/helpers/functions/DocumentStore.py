@@ -15,7 +15,7 @@ class DocumentStore:
         """
         self.es_index_name = es_index_name
         self.es_cloud_id = os.environ.get("ES_CLOUD_ID")
-        self.es_client_secret = os.environ.get("ES_CLIENT_SECRET")
+        self.es_api_key = os.environ.get("ES_API_KEY")
         self.es_url = (
             f"http://localhost:{os.environ.get('ES_PORT', '9200')}"
             if os.environ.get("STAGE") == "dev"
@@ -44,7 +44,7 @@ class DocumentStore:
                 ElasticsearchStore.from_documents(
                     documents=documents,
                     es_cloud_id=self.es_cloud_id,
-                    es_api_key=self.es_client_secret,
+                    es_api_key=self.es_api_key,
                     index_name=self.es_index_name,
                     embedding=embedding,
                 )
@@ -69,7 +69,7 @@ class DocumentStore:
             else:
                 db = ElasticsearchStore(
                     es_cloud_id=self.es_cloud_id,
-                    es_api_key=self.es_client_secret,
+                    es_api_key=self.es_api_key,
                     index_name=self.es_index_name,
                     embedding=embedding,
                 )
