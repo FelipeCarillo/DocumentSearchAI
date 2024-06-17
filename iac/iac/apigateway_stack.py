@@ -53,8 +53,6 @@ class ApiGatewayStack(Construct):
             self,
             "Authorizer",
             handler=authorizer,
-            identity_source=apigateway.IdentitySource.header("Authorization"),
-            authorizer_name="Authorizer",
         )
 
     def add_lambda_integration(

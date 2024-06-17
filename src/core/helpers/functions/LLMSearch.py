@@ -77,6 +77,7 @@ class LLMSearch:
             If you need more information, you can ask for it.
             Respond in the language of the original query.
             """
+        
         return rules
 
     @staticmethod
