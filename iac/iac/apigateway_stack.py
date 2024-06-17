@@ -17,6 +17,7 @@ class ApiGatewayStack(Construct):
         scope: Construct,
         construct_id: str,
         ENVIROMMENT: Dict[str, str],
+        authorizer: _lambda.Function,
         **kwargs: Dict[str, Any],
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -48,11 +49,19 @@ class ApiGatewayStack(Construct):
             },
         )
 
+        self.authorizer = apigateway.TokenAuthorizer(
+            self,
+            "Authorizer",
+            handler=authorizer,
+            identity_source=apigateway.IdentitySource.header("Authorization"),
+            authorizer_name="Authorizer",
+            results_cache_ttl=Duration.minutes(5),
+        )
+
     def add_lambda_integration(
         self,
         function_name: str,
         lambda_function: _lambda.Function,
-        lambda_authorizer: _lambda.Function,
         method: str,
     ) -> None:
 
@@ -68,12 +77,6 @@ class ApiGatewayStack(Construct):
             apigateway.LambdaIntegration(
                 lambda_function,
             ),
-            authorizer=apigateway.TokenAuthorizer(
-                self,
-                f"{function_name.title()}Authorizer",
-                handler=lambda_authorizer,
-                identity_source=apigateway.IdentitySource.header("Authorization"),
-                results_cache_ttl=Duration.minutes(5),
-            ),
+            authorizer=self.authorizer,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
         )
