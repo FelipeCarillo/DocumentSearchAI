@@ -34,7 +34,7 @@ def lambda_handler(event, context):
 
         data = {
             "llm_response": response,
-            "search_results": search_results,
+            "search_results": [document.dict() for document in search_results],
         }
 
         return OK("Success", data).to_dict()
