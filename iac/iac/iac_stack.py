@@ -13,10 +13,9 @@ class IacStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        STACK_NAME = os.environ.get("STACK_NAME")
-
         # Get the environment variables
         ENVIROMMENT = {
+            "STACK_NAME": os.environ.get("STACK_NAME"),
             "STAGE": os.environ.get("STAGE"),
             "AWS_BUCKET_NAME": os.environ.get("AWS_BUCKET_NAME"),
             "ES_API_KEY": os.environ.get("ES_API_KEY"),
@@ -25,10 +24,12 @@ class IacStack(Stack):
         }
 
         # Create the Lambda stack
-        lambda_stack = LambdaStack(self, f"{STACK_NAME}_LambdaStack", ENVIROMMENT)
+        lambda_stack = LambdaStack(
+            self, f"{ENVIROMMENT['STACK_NAME']}_LambdaStack", ENVIROMMENT
+        )
 
         # Create the S3 stack
-        s3_stack = S3Stack(self, f"{STACK_NAME}_S3Stack", ENVIROMMENT)
+        s3_stack = S3Stack(self, f"{ENVIROMMENT['STACK_NAME']}_S3Stack", ENVIROMMENT)
 
         # Set the Lambda permission to read and write the S3 bucket
         s3_stack.set_lambda_permission(lambda_stack.scan_file)
@@ -39,7 +40,7 @@ class IacStack(Stack):
 
         # Create the API Gateway stack
         api_gateway_stack = ApiGatewayStack(
-            self, f"{STACK_NAME}_ApiGatewayStack", ENVIROMMENT
+            self, f"{ENVIROMMENT['STACK_NAME']}_ApiGatewayStack", ENVIROMMENT
         )
 
         # Add the Lambda integration
