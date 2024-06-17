@@ -47,6 +47,16 @@ class OK(HTTPResponse):
         super().__init__(message, 200, data)
 
 
+class Created(HTTPResponse):
+    def __init__(self, message: str, data: Dict[str, Any] = None):
+        super().__init__(message, 201, data)
+
+
+class NoContent(HTTPResponse):
+    def __init__(self, message: str, data: Dict[str, Any] = None):
+        super().__init__(message, 204, data)
+
+
 class BadRequest(HTTPResponse):
     def __init__(self, message: str, data: Dict[str, Any] = None):
         super().__init__(message, 400, data)

@@ -32,6 +32,17 @@ class S3Manager:
 
         return files
 
+    def upload_file(self, file_name, file_body, content_type):
+        """
+        This function is responsible for uploading a file to the S3 bucket.
+        """
+        self.s3.put_object(
+            Bucket=self.bucket_name,
+            Key=file_name,
+            Body=file_body,
+            ContentType=content_type,
+        )
+
     def __generate_presigned_url(self, file_name, expiration=3600):
         """
         This function is responsible for generating a presigned URL for the given file.
