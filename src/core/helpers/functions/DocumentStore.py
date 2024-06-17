@@ -52,7 +52,7 @@ class DocumentStore:
         except Exception as e:
             raise e
 
-    def search_vector_store(self, query: str) -> dict:
+    def search_vector_store(self, query: str) -> List[Document]:
         """
         Searches the vector store for the given query and returns the search results.
         """
