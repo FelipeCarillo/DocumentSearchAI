@@ -1,7 +1,7 @@
 import os
 
-from src.core.helpers.http.http import HTTPRequest, OK
 from src.core.helpers.functions.S3Manager import S3Manager
+from src.core.helpers.http.http import HTTPRequest, OK, InternalServerError
 
 
 def lambda_handler(event, context):
@@ -26,4 +26,4 @@ def lambda_handler(event, context):
 
     except Exception as e:
         print(f"Error: {e}")
-        return {"error": str(e)}
+        return InternalServerError("Error", str(e)).to_dict()
