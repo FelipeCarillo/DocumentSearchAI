@@ -26,8 +26,7 @@ def lambda_handler(event, context):
         # Load the text from the input document
         documents = document_loader.load()
 
-        # Get the Elasticsearch index name from the environment variables
-        es_index_name = os.environ.get("ES_INDEX_NAME")
+        es_index_name = f"{bucket_name}-{object_name}-index"
 
         # Create an instance of the DocumentStore class
         document_store = DocumentStore(es_index_name=es_index_name)
