@@ -52,14 +52,13 @@ class LambdaStack(Construct):
 
     @staticmethod
     def __create_lambda_function(
-        self, name: str, ENVIROMMENT: dict, LAYER: _lambda.LayerVersion
+        name: str, ENVIROMMENT: dict, LAYER: _lambda.LayerVersion
     ) -> _lambda.Function:
 
         code = _lambda.Code.from_asset(f"src/modules/{name}")
         handler = f"lambda_handler"
 
         return _lambda.Function(
-            self,
             ENVIROMMENT["STACK_NAME"] + "_" + name.title(),
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler=handler,
