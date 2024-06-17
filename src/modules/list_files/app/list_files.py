@@ -9,8 +9,6 @@ def lambda_handler(event, context):
     This function is responsible for listing the files in the S3 bucket.
     """
 
-    request = HTTPRequest(event)
-
     try:
 
         # Get the bucket name from the environment variables
