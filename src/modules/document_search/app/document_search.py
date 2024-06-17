@@ -16,9 +16,9 @@ def lambda_handler(event, context):
 
         # Get the query from the request parameters
         query = request.parameters.get("query")
+        object_name = request.parameters.get("object_name")
 
-        # Get the Elasticsearch index name from the environment variables
-        es_index_name = os.environ.get("ES_INDEX_NAME")
+        es_index_name = f"{os.environ.get("AWS_BUCKET_NAME")}-{object_name}-index"
 
         # Create an instance of the DocumentStore class
         document_store = DocumentStore(es_index_name=es_index_name)
@@ -32,7 +32,12 @@ def lambda_handler(event, context):
         # Create a response with GPT-4o to the given query using the search results
         response = llm.create_response(query, search_results)
 
-        return OK("Success", response).to_dict()
+        data = {
+            "llm_response": response,
+            "search_results": search_results,
+        }
+
+        return OK("Success", data).to_dict()
 
     except Exception as e:
         print(f"Error: {e}")
