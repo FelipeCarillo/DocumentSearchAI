@@ -43,7 +43,7 @@ class DocumentStore:
             else:
                 ElasticsearchStore.from_documents(
                     documents=documents,
-                    cloud_id=self.es_client_id,
+                    es_cloud_id=self.es_client_id,
                     es_api_key=self.es_client_secret,
                     index_name=self.es_index_name,
                     embedding=embedding,
@@ -68,7 +68,7 @@ class DocumentStore:
                 )
             else:
                 db = ElasticsearchStore(
-                    cloud_id=self.es_client_id,
+                    es_cloud_id=self.es_client_id,
                     es_api_key=self.es_client_secret,
                     index_name=self.es_index_name,
                     embedding=embedding,
