@@ -47,6 +47,12 @@ class S3Manager:
             ContentType=content_type,
         )
 
+    def delete_file(self, file_name):
+        """
+        This function is responsible for deleting a file from the S3 bucket.
+        """
+        self.s3.delete_object(Bucket=self.bucket_name, Key=file_name)
+
     def __generate_presigned_url(self, file_name, expiration=3600):
         """
         This function is responsible for generating a presigned URL for the given file.
