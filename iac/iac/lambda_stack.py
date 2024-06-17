@@ -58,6 +58,11 @@ class LambdaStack(Construct):
             "upload_file", ENVIROMMENT, layer
         )
 
+        # Creating a Lambda function
+        self.delete_file = self.__create_lambda_function(
+            "delete_file", ENVIROMMENT, layer
+        )
+
     def __create_lambda_function(
         self, name: str, ENVIROMMENT: dict, LAYER: _lambda.LayerVersion
     ) -> _lambda.Function:

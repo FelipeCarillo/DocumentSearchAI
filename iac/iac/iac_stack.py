@@ -27,6 +27,7 @@ class IacStack(Stack):
         s3_stack.set_lambda_permission(lambda_stack.scan_file)
         s3_stack.set_lambda_permission(lambda_stack.list_files)
         s3_stack.set_lambda_permission(lambda_stack.upload_file)
+        s3_stack.set_lambda_permission(lambda_stack.delete_file)
 
         # Set the Lambda trigger to scan the file
         s3_stack.set_lambda_trigger(lambda_stack.scan_file)
@@ -48,4 +49,7 @@ class IacStack(Stack):
         )
         api_gateway_stack.add_lambda_integration(
             "upload_file", lambda_stack.upload_file, "POST"
+        )
+        api_gateway_stack.add_lambda_integration(
+            "delete_file", lambda_stack.delete_file, "DELETE"
         )
