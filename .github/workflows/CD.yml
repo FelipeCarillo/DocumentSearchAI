@@ -52,6 +52,10 @@ jobs:
         run: |
           echo "CDK Deploy"
           cd iac
+          echo "Verifiying CDK Toolkit stack exists or not, if not then creating it"
+          aws cloudformation describe-stacks --stack-name CDKToolkit 2>&1 > /dev/null || \
+            cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/${{ secrets.AWS_REGION }}
+          echo "Deploying CDK stack"
           cdk deploy --require-approval never
         env:
           STAGE: ${{ env.STAGE }}

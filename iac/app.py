@@ -16,7 +16,7 @@ AWS_REGION = os.environ["AWS_REGION"]
 ENVIROMMENT = {
     "STACK_NAME": os.environ["STACK_NAME"],
     "STAGE": os.environ["STAGE"],
-    "BUCKET_NAME": os.environ["BUCKET_NAME"],
+    "AWS_BUCKET_NAME": os.environ["AWS_BUCKET_NAME"],
     "ES_API_KEY": os.environ["ES_API_KEY"],
     "ES_CLOUD_ID": os.environ["ES_CLOUD_ID"],
     "ES_INDEX_NAME": os.environ["ES_INDEX_NAME"],
