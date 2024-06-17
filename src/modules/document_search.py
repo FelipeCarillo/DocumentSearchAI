@@ -1,5 +1,6 @@
 import os
 
+from src.core.helpers.http.http import HTTPRequest, OK
 from src.core.helpers.functions.LLMSearch import LLMSearch
 from src.core.helpers.functions.DocumentStore import DocumentStore
 
@@ -9,9 +10,12 @@ def lambda_handler(event, context):
     This function is responsible for making search requests to the Elasticsearch database according to the query.
     """
 
+    request = HTTPRequest(event)
+
     try:
-        # Get the query from the event
-        query = event["query"]
+
+        # Get the query from the request parameters
+        query = request.parameters.get("query")
 
         # Get the Elasticsearch index name from the environment variables
         es_index_name = os.environ.get("ES_INDEX_NAME")
@@ -28,10 +32,7 @@ def lambda_handler(event, context):
         # Create a response with GPT-4o to the given query using the search results
         response = llm.create_response(query, search_results)
 
-        return {
-            "llm_response": response,
-            "search_results": search_results,
-        }
+        return OK("Success", response).to_dict()
 
     except Exception as e:
         print(f"Error: {e}")
