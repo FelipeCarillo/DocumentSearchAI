@@ -69,7 +69,7 @@ class ApiGatewayStack(Construct):
             function_name.replace("_", "-"),
             default_cors_preflight_options={
                 "allow_origins": apigateway.Cors.ALL_ORIGINS,
-                "allow_methods": apigateway.Cors.ALL_METHODS,
+                "allow_methods": [method],
                 "allow_headers": ["*"],
             },
         ).add_method(
