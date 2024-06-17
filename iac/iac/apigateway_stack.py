@@ -36,6 +36,7 @@ class ApiGatewayStack(Construct):
                 "allow_headers": ["*"],
             },
             deploy_options=apigateway.StageOptions(stage_name="prod"),
+            cloud_watch_role=True,
         )
 
         root_resource = ENVIROMMENT["STACK_NAME"].lower().replace("_", "-")
