@@ -24,6 +24,8 @@ class HTTPRequest:
             import base64
 
             body = base64.b64decode(body).decode("utf-8")
+        if body and isinstance(body, str):
+            body = json.loads(body)
         return body
 
 
