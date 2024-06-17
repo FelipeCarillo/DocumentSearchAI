@@ -32,7 +32,6 @@ def lambda_handler(event, context):
         # Search the Elasticsearch database for the query
         search_results = document_store.search_vector_store(optimize_query)
 
-
         # Create a response with GPT-4o to the given query using the search results
         response = llm.create_response(query, search_results)
 

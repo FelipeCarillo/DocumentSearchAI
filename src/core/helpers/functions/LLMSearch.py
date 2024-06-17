@@ -75,7 +75,7 @@ class LLMSearch:
             You must only answer the query asked. Do not provide any additional information.
             If you do not know the answer, you can respond with "I could not find the answer."
             If you need more information, you can ask for it.
-            Respond in this language: Portuguese
+            Respond in the language of the original query.
             """
         return rules
 
@@ -92,3 +92,5 @@ class LLMSearch:
             Write the optimized query in the language of the original query.
             Only return the optimized query.
             """
+
+        return rules
