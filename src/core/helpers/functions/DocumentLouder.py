@@ -25,8 +25,6 @@ class DocumentLoader:
             bucket_name: The name of the S3 bucket.
             object_name: The name of the S3 object.
             aws_region: The AWS region.
-            aws_access_key_id: The AWS access key ID. (optional) -> For local testing
-            aws_secret_access_key: The AWS secret access key. (optional) -> For local testing
         """
 
         self.bucket_name = bucket_name

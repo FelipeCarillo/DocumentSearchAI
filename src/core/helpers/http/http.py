@@ -37,7 +37,10 @@ class HTTPResponse:
         response = {
             "statusCode": self.statusCode,
             "body": json.dumps({"message": self.message, "data": self.data}),
-            "headers": {"Content-Type": "application/json"},
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
         }
         return response
 
