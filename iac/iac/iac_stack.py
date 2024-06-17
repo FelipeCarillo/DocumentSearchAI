@@ -26,6 +26,7 @@ class IacStack(Stack):
         # Set the Lambda permission to read and write the S3 bucket
         s3_stack.set_lambda_permission(lambda_stack.scan_file)
         s3_stack.set_lambda_permission(lambda_stack.list_files)
+        s3_stack.set_lambda_permission(lambda_stack.upload_file)
 
         # Set the Lambda trigger to scan the file
         s3_stack.set_lambda_trigger(lambda_stack.scan_file)
