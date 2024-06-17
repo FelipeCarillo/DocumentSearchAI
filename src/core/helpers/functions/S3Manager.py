@@ -1,4 +1,5 @@
 import boto3
+import base64
 
 
 class S3Manager:
@@ -39,7 +40,7 @@ class S3Manager:
         self.s3.put_object(
             Bucket=self.bucket_name,
             Key=file_name,
-            Body=file_body,
+            Body=base64.b64decode(file_body),
             ContentType=content_type,
         )
 
