@@ -31,7 +31,7 @@ class ApiGatewayStack(Construct):
             rest_api_name=ENVIROMMENT["STACK_NAME"] + "_" + name.title(),
             description=f"This is the API Gateway for the {ENVIROMMENT['STACK_NAME']} stack",
             default_cors_preflight_options={
-                "allow_origins": ["*"],
+                "allow_origins": apigateway.Cors.ALL_ORIGINS,
                 "allow_methods": apigateway.Cors.ALL_METHODS,
                 "allow_headers": ["*"],
             },
@@ -43,7 +43,7 @@ class ApiGatewayStack(Construct):
         self.root_resource = api_gateway.root.add_resource(
             root_resource,
             default_cors_preflight_options={
-                "allow_origins": ["*"],
+                "allow_origins": apigateway.Cors.ALL_ORIGINS,
                 "allow_methods": apigateway.Cors.ALL_METHODS,
                 "allow_headers": ["*"],
             },
@@ -68,7 +68,7 @@ class ApiGatewayStack(Construct):
         self.root_resource.add_resource(
             function_name.replace("_", "-"),
             default_cors_preflight_options={
-                "allow_origins": ["*"],
+                "allow_origins": apigateway.Cors.ALL_ORIGINS,
                 "allow_methods": [method],
                 "allow_headers": ["*"],
             },
