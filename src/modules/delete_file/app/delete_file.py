@@ -3,7 +3,12 @@ import os
 from src.core.helpers.functions.S3Manager import S3Manager
 from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.functions.DocumentStore import DocumentStore
-from src.core.helpers.http.http import HTTPRequest, Created, InternalServerError
+from src.core.helpers.http.http import (
+    HTTPRequest,
+    Created,
+    InternalServerError,
+    Unauthorized,
+)
 
 
 def lambda_handler(event, context):
@@ -13,11 +18,8 @@ def lambda_handler(event, context):
 
     request = HTTPRequest(event)
 
-    authorizer = Authorizer().authorize(request.headers["Authorization"])
-    if not isinstance(authorizer, str):
-        return authorizer
-
     try:
+        Authorizer().authorize(request.headers["Authorization"])
 
         # Get the bucket name from the environment variables
         bucket_name = os.environ.get("AWS_BUCKET_NAME")
@@ -39,6 +41,7 @@ def lambda_handler(event, context):
         # Return the response
         return Created("File uploaded successfully", file).to_dict()
 
+    except Unauthorized as e:
+        return e.to_dict()
     except Exception as e:
-        print(f"Error: {e}")
         return InternalServerError("Error", str(e)).to_dict()

@@ -20,4 +20,4 @@ class Authorizer:
             return decoded
 
         except Exception as e:
-            return Unauthorized("Unauthorized", str(e)).to_dict()
+            raise Unauthorized(message="Token expired or invalid")

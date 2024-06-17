@@ -3,7 +3,7 @@ import os
 from src.core.helpers.functions.LLMSearch import LLMSearch
 from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.functions.DocumentStore import DocumentStore
-from src.core.helpers.http.http import HTTPRequest, OK, InternalServerError
+from src.core.helpers.http.http import HTTPRequest, OK, InternalServerError, Unauthorized
 
 
 def lambda_handler(event, context):
@@ -13,11 +13,8 @@ def lambda_handler(event, context):
 
     request = HTTPRequest(event)
 
-    authorizer = Authorizer().authorize(request.headers["Authorization"])
-    if not isinstance(authorizer, str):
-        return authorizer
-
     try:
+        Authorizer().authorize(request.headers["Authorization"])
 
         # Get the query from the request parameters
         query = request.parameters.get("query")
@@ -46,6 +43,9 @@ def lambda_handler(event, context):
         }
 
         return OK("Success", data).to_dict()
+    
+    except Unauthorized as e:
+        return e.to_dict()
 
     except Exception as e:
         print(f"Error: {e}")
