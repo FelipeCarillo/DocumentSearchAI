@@ -48,13 +48,6 @@ jobs:
           aws configure set default.region ${{ secrets.AWS_REGION }}
           aws configure set default.output json
 
-      - name: CDK Bootstrap
-        run: |
-          echo "CDK Bootstrap"
-          cd iac
-          aws cloudformation describe-stacks --stack-name CDKToolkit 2>&1 > /dev/null || \
-            cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/${{ secrets.AWS_REGION }}
-
       - name: CDK Deploy
         run: |
           echo "CDK Deploy"
