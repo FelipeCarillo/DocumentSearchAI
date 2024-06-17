@@ -59,6 +59,8 @@ jobs:
           cdk deploy --require-approval never
         env:
           STAGE: ${{ env.STAGE }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           STACK_NAME: ${{ env.STACK_NAME }}
           ES_API_KEY: ${{ secrets.ES_API_KEY }}
           ES_CLOUD_ID: ${{ secrets.ES_CLOUD_ID }}
@@ -68,4 +70,3 @@ jobs:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

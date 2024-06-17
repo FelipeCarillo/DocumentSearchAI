@@ -1,7 +1,12 @@
 from constructs import Construct
 from typing import Any, Dict, Tuple
 
-from aws_cdk import aws_apigateway as apigateway, aws_lambda as _lambda, aws_iam as iam
+from aws_cdk import (
+    Duration,
+    aws_apigateway as apigateway,
+    aws_lambda as _lambda,
+    aws_iam as iam,
+)
 
 
 class ApiGatewayStack(Construct):
@@ -47,6 +52,7 @@ class ApiGatewayStack(Construct):
         self,
         function_name: str,
         lambda_function: _lambda.Function,
+        lambda_authorizer: _lambda.Function,
         method: str,
     ) -> None:
 
@@ -62,4 +68,12 @@ class ApiGatewayStack(Construct):
             apigateway.LambdaIntegration(
                 lambda_function,
             ),
+            authorizer=apigateway.TokenAuthorizer(
+                self,
+                f"{function_name.title()}Authorizer",
+                handler=lambda_authorizer,
+                identity_source=apigateway.IdentitySource.header("Authorization"),
+                results_cache_ttl=Duration.minutes(5),
+            ),
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
         )
