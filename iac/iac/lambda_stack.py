@@ -54,7 +54,7 @@ class LambdaStack(Construct):
         self, name: str, ENVIROMMENT: dict, LAYER: _lambda.LayerVersion
     ) -> _lambda.Function:
 
-        code = _lambda.Code.from_asset(f"src/modules/{name}")
+        code = _lambda.Code.from_asset(f"../src/modules/{name}")
         handler = f"lambda_handler"
 
         return _lambda.Function(
