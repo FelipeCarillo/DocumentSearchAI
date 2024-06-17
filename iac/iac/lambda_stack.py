@@ -50,6 +50,10 @@ class LambdaStack(Construct):
             "list_files", ENVIROMMENT, layer
         )
 
+        self.upload_file = self.__create_lambda_function(
+            "upload_file", ENVIROMMENT, layer
+        )
+
     def __create_lambda_function(
         self, name: str, ENVIROMMENT: dict, LAYER: _lambda.LayerVersion
     ) -> _lambda.Function:

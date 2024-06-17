@@ -40,5 +40,8 @@ class IacStack(Stack):
             "list_files", lambda_stack.list_files, "GET"
         )
         api_gateway_stack.add_lambda_integration(
-            "scan_file", lambda_stack.scan_file, "POST"
+            "document_search", lambda_stack.document_search, "GET"
+        )
+        api_gateway_stack.add_lambda_integration(
+            "upload_file", lambda_stack.upload_file, "POST"
         )
