@@ -34,6 +34,12 @@ jobs:
           cd lambda_layers
           pip install -r requirements.txt -t python
 
+      - name: Setting STAGE and STACK_NAME env
+        run: |
+          echo "Setting STAGE and STACK_NAME env"
+          echo "STAGE=prod" >> $GITHUB_ENV
+          echo "STACK_NAME=DocumentSearchAI" >> $GITHUB_ENV
+
       - name: AWS Credentials
         run: |
           echo "Configuring AWS Credentials"
@@ -55,8 +61,8 @@ jobs:
           cd iac
           cdk deploy --require-approval never
         env:
-          STAGE: "prod"
-          STACK_NAME: "DocumentSearchAI"
+          STAGE: ${{ env.STAGE }}
+          STACK_NAME: ${{ env.STACK_NAME }}
           ES_API_KEY: ${{ secrets.ES_API_KEY }}
           ES_CLOUD_ID: ${{ secrets.ES_CLOUD_ID }}
           ES_INDEX_NAME: ${{ secrets.ES_INDEX_NAME }}
