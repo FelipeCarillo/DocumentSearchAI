@@ -63,7 +63,8 @@ class LambdaStack(Construct):
 
         return _lambda.Function(
             self,
-            ENVIROMMENT["STACK_NAME"] + "_" + name.title(),
+            f"{name.title()}_{ENVIROMMENT['STACK_NAME']}",
+            function_name=f"{name.title()}_{ENVIROMMENT['STACK_NAME']}",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler=handler,
             code=code,
