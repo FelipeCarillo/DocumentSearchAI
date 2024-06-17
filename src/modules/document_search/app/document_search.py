@@ -18,16 +18,20 @@ def lambda_handler(event, context):
         query = request.parameters.get("query")
         object_name = request.parameters.get("object_name")
 
+        # Create an instance of the LLMSearch class
+        llm = LLMSearch()
+
+        # Optimize the query
+        optimize_query = llm.optimize_query(query)
+
         es_index_name = f"{os.environ.get("AWS_BUCKET_NAME")}-{object_name}-index"
 
         # Create an instance of the DocumentStore class
         document_store = DocumentStore(es_index_name=es_index_name)
 
         # Search the Elasticsearch database for the query
-        search_results = document_store.search_vector_store(query)
+        search_results = document_store.search_vector_store(optimize_query)
 
-        # Create an instance of the LLMSearch class
-        llm = LLMSearch()
 
         # Create a response with GPT-4o to the given query using the search results
         response = llm.create_response(query, search_results)

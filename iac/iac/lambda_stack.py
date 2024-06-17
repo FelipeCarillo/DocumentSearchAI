@@ -5,8 +5,6 @@ from aws_cdk import aws_lambda as _lambda, Duration
 
 
 class LambdaStack(Construct):
-    scan_file: _lambda.Function
-    document_search: _lambda.Function
 
     def __init__(
         self,

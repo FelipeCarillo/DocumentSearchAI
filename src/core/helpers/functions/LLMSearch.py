@@ -11,6 +11,26 @@ class LLMSearch:
             messages: A list of messages.
         """
 
+    def optimize_query(self, query: str) -> str:
+        """
+        Optimizes the given query to improve the performance of the similary search algorithm.
+        """
+        # Create an instance of the OpenAI class
+        client = OpenAI()
+
+        # Create a prompt
+        prompt = self.__get_llm_optimizer_configuration()
+
+        # Create a completion with GPT-4o
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": query},
+            ],
+        )
+
+        return response.choices[0].message.content
 
     def create_response(self, query: str, results: dict) -> str:
         """
@@ -28,7 +48,7 @@ class LLMSearch:
         client = OpenAI()
 
         # Create a prompt
-        prompt = self.__get_llm_configuration()
+        prompt = self.__get_llm_search_configuration()
 
         # Create a completion with GPT-4o
         response = client.chat.completions.create(
@@ -43,7 +63,7 @@ class LLMSearch:
         return response.choices[0].message.content
 
     @staticmethod
-    def __get_llm_configuration():
+    def __get_llm_search_configuration():
         """
         Sets the LLM configuration.
         """
@@ -58,3 +78,17 @@ class LLMSearch:
             Respond in this language: Portuguese
             """
         return rules
+
+    @staticmethod
+    def __get_llm_optimizer_configuration():
+        """
+        Sets the LLM configuration.
+        """
+        rules = """
+            You are a query optimizer. You have to optimize the given query to improve the performance of the similary search algorithm.
+            Exemple: 
+            Query: "What is my commition in a sale of 1000$?"
+            Optimized Query: "What is the porcentage of my commition in a sale?"
+            Write the optimized query in the language of the original query.
+            Only return the optimized query.
+            """
