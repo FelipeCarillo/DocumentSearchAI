@@ -37,6 +37,9 @@ class S3Manager:
         """
         This function is responsible for uploading a file to the S3 bucket.
         """
+        
+        file_body = file_body.split(",")[-1]
+
         self.s3.put_object(
             Bucket=self.bucket_name,
             Key=file_name,
