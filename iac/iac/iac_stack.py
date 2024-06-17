@@ -32,19 +32,19 @@ class IacStack(Stack):
 
         # Create the API Gateway stack
         api_gateway_stack = ApiGatewayStack(
-            self, f"{ENVIROMMENT['STACK_NAME']}_ApiGatewayStack", ENVIROMMENT
+            self,
+            f"{ENVIROMMENT['STACK_NAME']}_ApiGatewayStack",
+            ENVIROMMENT,
+            lambda_stack.authorizer,
         )
 
         # Add the Lambda integration
         api_gateway_stack.add_lambda_integration(
-            "list_files", lambda_stack.list_files, lambda_stack.authorizer, "GET"
+            "list_files", lambda_stack.list_files, "GET"
         )
         api_gateway_stack.add_lambda_integration(
-            "document_search",
-            lambda_stack.document_search,
-            lambda_stack.authorizer,
-            "GET",
+            "document_search", lambda_stack.document_search, "GET"
         )
         api_gateway_stack.add_lambda_integration(
-            "upload_file", lambda_stack.upload_file, lambda_stack.authorizer, "POST"
+            "upload_file", lambda_stack.upload_file, "POST"
         )
