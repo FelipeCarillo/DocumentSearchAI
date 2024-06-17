@@ -19,7 +19,7 @@ class S3Manager:
             for file in response["Contents"]:
                 file_name = file["Key"].split("/")[-1]
                 file_type = file_name.split(".")[-1]
-                file_timestamp = file["LastModified"]
+                file_timestamp = file["LastModified"].isoformat()
                 url = self.__generate_presigned_url(file_name)
                 files.append(
                     {
