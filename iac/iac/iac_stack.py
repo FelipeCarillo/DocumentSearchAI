@@ -34,10 +34,7 @@ class IacStack(Stack):
 
         # Create the API Gateway stack
         api_gateway_stack = ApiGatewayStack(
-            self,
-            f"{ENVIROMMENT['STACK_NAME']}_ApiGatewayStack",
-            ENVIROMMENT,
-            lambda_stack.authorizer,
+            self, f"{ENVIROMMENT['STACK_NAME']}_ApiGatewayStack", ENVIROMMENT
         )
 
         # Add the Lambda integration

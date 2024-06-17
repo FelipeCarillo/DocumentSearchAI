@@ -23,11 +23,6 @@ class LambdaStack(Construct):
             compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
         )
 
-        # Creating a Authorizer Lambda function
-        self.authorizer = self.__create_lambda_function(
-            "authorizer", ENVIROMMENT, layer
-        )
-
         # Creating a Lambda function
         self.scan_file = self.__create_lambda_function("scan_file", ENVIROMMENT, layer)
 

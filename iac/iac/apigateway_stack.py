@@ -10,14 +10,12 @@ from aws_cdk import (
 
 
 class ApiGatewayStack(Construct):
-    root_resource: apigateway.IResource
 
     def __init__(
         self,
         scope: Construct,
         construct_id: str,
         ENVIROMMENT: Dict[str, str],
-        authorizer: _lambda.Function,
         **kwargs: Dict[str, Any],
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -50,12 +48,6 @@ class ApiGatewayStack(Construct):
             },
         )
 
-        self.authorizer = apigateway.TokenAuthorizer(
-            self,
-            "Authorizer",
-            handler=authorizer,
-        )
-
     def add_lambda_integration(
         self,
         function_name: str,
@@ -75,6 +67,4 @@ class ApiGatewayStack(Construct):
             apigateway.LambdaIntegration(
                 lambda_function,
             ),
-            authorizer=self.authorizer,
-            authorization_type=apigateway.AuthorizationType.CUSTOM,
         )

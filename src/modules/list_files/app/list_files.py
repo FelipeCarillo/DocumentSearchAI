@@ -1,6 +1,7 @@
 import os
 
 from src.core.helpers.functions.S3Manager import S3Manager
+from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.http.http import HTTPRequest, OK, InternalServerError
 
 
@@ -8,6 +9,12 @@ def lambda_handler(event, context):
     """
     This function is responsible for listing the files in the S3 bucket.
     """
+
+    request = HTTPRequest(event)
+
+    authorizer = Authorizer().authorize(request.headers["Authorization"])
+    if not isinstance(authorizer, str):
+        return authorizer
 
     try:
 

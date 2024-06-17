@@ -1,6 +1,7 @@
 import os
 
 from src.core.helpers.functions.S3Manager import S3Manager
+from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.http.http import HTTPRequest, Created, InternalServerError
 
 
@@ -10,6 +11,10 @@ def lambda_handler(event, context):
     """
 
     request = HTTPRequest(event)
+
+    authorizer = Authorizer().authorize(request.headers["Authorization"])
+    if not isinstance(authorizer, str):
+        return authorizer
 
     try:
 

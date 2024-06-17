@@ -1,8 +1,9 @@
 import os
 
-from src.core.helpers.http.http import HTTPRequest, OK, InternalServerError
 from src.core.helpers.functions.LLMSearch import LLMSearch
+from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.functions.DocumentStore import DocumentStore
+from src.core.helpers.http.http import HTTPRequest, OK, InternalServerError
 
 
 def lambda_handler(event, context):
@@ -11,6 +12,10 @@ def lambda_handler(event, context):
     """
 
     request = HTTPRequest(event)
+
+    authorizer = Authorizer().authorize(request.headers["Authorization"])
+    if not isinstance(authorizer, str):
+        return authorizer
 
     try:
 
