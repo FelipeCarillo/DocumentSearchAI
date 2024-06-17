@@ -1,4 +1,4 @@
-jwt
+pyjwt
 boto3
 pytest
 uvicorn

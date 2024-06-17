@@ -1,4 +1,4 @@
-jwt
+pyjwt
 openai==1.34.0
 langchain==0.2.3
 pdfminer.six==20231228
