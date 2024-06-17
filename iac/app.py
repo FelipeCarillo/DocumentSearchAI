@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import os
+import dotenv
 
 import aws_cdk as cdk
 
 from iac.iac_stack import IacStack
 
+dotenv.load_dotenv()
 
 app = cdk.App()
 
