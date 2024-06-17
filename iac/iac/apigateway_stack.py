@@ -44,10 +44,7 @@ class ApiGatewayStack(Construct):
         )
 
     def add_lambda_integration(
-        self,
-        lambda_function: _lambda.Function,
-        method: str,
-        authorization_type: str = "NONE",
+        self, lambda_function: _lambda.Function, method: str
     ) -> None:
 
         self.root_resource.add_resource(
@@ -62,5 +59,4 @@ class ApiGatewayStack(Construct):
             apigateway.LambdaIntegration(
                 lambda_function,
             ),
-            authorization_type=authorization_type,
         )
