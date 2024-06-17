@@ -44,11 +44,14 @@ class ApiGatewayStack(Construct):
         )
 
     def add_lambda_integration(
-        self, lambda_function: _lambda.Function, method: str
+        self,
+        function_name: str,
+        lambda_function: _lambda.Function,
+        method: str,
     ) -> None:
 
         self.root_resource.add_resource(
-            method,
+            function_name.replace("_", "-"),
             default_cors_preflight_options={
                 "allow_origins": apigateway.Cors.ALL_ORIGINS,
                 "allow_methods": apigateway.Cors.ALL_METHODS,
