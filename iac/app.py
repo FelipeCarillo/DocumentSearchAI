@@ -24,7 +24,7 @@ ENVIROMMENT = {
 
 IacStack(
     scope=app,
-    construct_id=f"{ENVIROMMENT['STACK_NAME']}_IacStack",
+    construct_id=f"{ENVIROMMENT['STACK_NAME']}Stack",
     ENVIROMMENT=ENVIROMMENT,
     env=cdk.Environment(
         account=AWS_ACCOUNT_ID,
