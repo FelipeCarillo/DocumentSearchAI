@@ -33,7 +33,7 @@ class ApiGatewayStack(Construct):
             default_cors_preflight_options={
                 "allow_origins": apigateway.Cors.ALL_ORIGINS,
                 "allow_methods": apigateway.Cors.ALL_METHODS,
-                "allow_headers": apigateway.Cors.DEFAULT_HEADERS,
+                "allow_headers": ["*"],
             },
             deploy_options=apigateway.StageOptions(stage_name="prod"),
         )
@@ -45,7 +45,7 @@ class ApiGatewayStack(Construct):
             default_cors_preflight_options={
                 "allow_origins": apigateway.Cors.ALL_ORIGINS,
                 "allow_methods": apigateway.Cors.ALL_METHODS,
-                "allow_headers": apigateway.Cors.DEFAULT_HEADERS,
+                "allow_headers": ["*"],
             },
         )
 
@@ -70,7 +70,7 @@ class ApiGatewayStack(Construct):
             default_cors_preflight_options={
                 "allow_origins": apigateway.Cors.ALL_ORIGINS,
                 "allow_methods": apigateway.Cors.ALL_METHODS,
-                "allow_headers": apigateway.Cors.DEFAULT_HEADERS,
+                "allow_headers": ["*"],
             },
         ).add_method(
             method,
