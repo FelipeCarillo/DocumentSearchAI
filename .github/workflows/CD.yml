@@ -28,7 +28,8 @@ jobs:
       - name: Creating Source Core layers
         run: |
           echo "Creating Source Core layers"
-          cp -r src/core iac/lambda_layers/python/src/core
+          mkdir -p iac/lambda_layers/python/src/core
+          cp -r src/core/* iac/lambda_layers/python/src/core
           cd iac
           cd lambda_layers
           pip install -r requirements.txt -t python
