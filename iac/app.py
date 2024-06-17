@@ -20,6 +20,7 @@ ENVIROMMENT = {
     "ES_API_KEY": os.environ["ES_API_KEY"],
     "ES_CLOUD_ID": os.environ["ES_CLOUD_ID"],
     "ES_INDEX_NAME": os.environ["ES_INDEX_NAME"],
+    "OPENAI_API_KEY": os.environ["OPENAI_API_KEY"],
 }
 
 IacStack(
