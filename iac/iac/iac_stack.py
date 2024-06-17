@@ -1,8 +1,7 @@
 import os
 from constructs import Construct
 
-import aws_cdk
-from aws_cdk import Stack, aws_s3 as s3, aws_lambda as _lambda, aws_lambda_event_sources
+from aws_cdk import Stack
 
 from .s3_stack import S3Stack
 from .lambda_stack import LambdaStack
@@ -31,14 +30,19 @@ class IacStack(Stack):
         # Create the S3 stack
         s3_stack = S3Stack(self, f"{STACK_NAME}_S3Stack", ENVIROMMENT)
 
-        # Set the Lambda permission and trigger
+        # Set the Lambda permission to read and write the S3 bucket
         s3_stack.set_lambda_permission(lambda_stack.scan_file)
+        s3_stack.set_lambda_permission(lambda_stack.list_files)
+
+        # Set the Lambda trigger to scan the file
         s3_stack.set_lambda_trigger(lambda_stack.scan_file)
 
         # Create the API Gateway stack
-        api_gateway_stack = ApiGatewayStack(self, f"{STACK_NAME}_ApiGatewayStack", ENVIROMMENT)
+        api_gateway_stack = ApiGatewayStack(
+            self, f"{STACK_NAME}_ApiGatewayStack", ENVIROMMENT
+        )
 
         # Add the Lambda integration
-        api_gateway_stack.add_lambda_integration(lambda_stack.document_search, "document_search")
-
-
+        api_gateway_stack.add_lambda_integration(
+            lambda_stack.document_search, "document_search"
+        )

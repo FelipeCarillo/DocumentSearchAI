@@ -45,6 +45,11 @@ class LambdaStack(Construct):
             "document_search", ENVIROMMENT, layer
         )
 
+        # Creating a Lambda function
+        self.list_files = self.__create_lambda_function(
+            "list_files", ENVIROMMENT, layer
+        )
+
     @staticmethod
     def __create_lambda_function(
         self, name: str, ENVIROMMENT: dict, LAYER: _lambda.LayerVersion
