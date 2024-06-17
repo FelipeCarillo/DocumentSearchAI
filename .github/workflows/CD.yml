@@ -1,0 +1,66 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy_to_AWS:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install CDK dependencies
+        run: |
+          echo "Installing CDK dependencies"
+          npm install -g aws-cdk
+          cd iac
+          pip install -r requirements.txt
+
+      - name: Creating Source Core layers
+        run: |
+          echo "Creating Source Core layers"
+          cp -r src/core iac/lambda_layers/python/src/core
+          cd iac
+          cd lambda_layers
+          pip install -r requirements.txt -t python
+
+      - name: AWS Credentials
+        run: |
+          echo "Configuring AWS Credentials"
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ${{ secrets.AWS_REGION }}
+          aws configure set default.output json
+
+      - name: CDK Bootstrap
+        run: |
+          echo "CDK Bootstrap"
+          cd iac
+          aws cloudformation describe-stacks --stack-name CDKToolkit 2>&1 > /dev/null || \
+            cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/${{ secrets.AWS_REGION }}
+
+      - name: CDK Deploy
+        run: |
+          echo "CDK Deploy"
+          cd iac
+          cdk deploy --require-approval never
+        env:
+          STAGE: "prod"
+          STACK_NAME: "DocumentSearchAI"
+          ES_API_KEY: ${{ secrets.ES_API_KEY }}
+          ES_CLOUD_ID: ${{ secrets.ES_CLOUD_ID }}
+          ES_INDEX_NAME: ${{ secrets.ES_INDEX_NAME }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
