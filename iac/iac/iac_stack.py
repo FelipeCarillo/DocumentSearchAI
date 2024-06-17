@@ -36,6 +36,5 @@ class IacStack(Stack):
         )
 
         # Add the Lambda integration
-        api_gateway_stack.add_lambda_integration(
-            lambda_stack.document_search, "document_search"
-        )
+        api_gateway_stack.add_lambda_integration(lambda_stack.list_files, "GET")
+        api_gateway_stack.add_lambda_integration(lambda_stack.document_search, "GET")
