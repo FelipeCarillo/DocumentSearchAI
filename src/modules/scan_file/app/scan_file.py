@@ -1,7 +1,7 @@
 import os
 
 from src.core.helpers.functions.DocumentStore import DocumentStore
-from src.core.helpers.functions.DocumentLouder import DocumentLoader
+from src.core.helpers.functions.DocumentLoader import DocumentLoader
 
 
 def lambda_handler(event, context):

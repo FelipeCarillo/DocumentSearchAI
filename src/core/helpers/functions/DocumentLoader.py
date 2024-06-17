@@ -140,7 +140,11 @@ class DocumentLoader:
                 if item["BlockType"] == "LINE":
                     text_extracted += item["Text"] + "\n"
 
-            loader = TextLoader(text_extracted)
+            with NamedTemporaryFile(delete=False, suffix=".txt") as temp_file:
+                temp_file.write(text_extracted.encode("utf-8"))
+                temp_file_path = temp_file.name
+
+            loader = TextLoader(temp_file_path)
             docs = loader.load()
 
             for doc in docs:
