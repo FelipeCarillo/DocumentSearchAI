@@ -35,13 +35,10 @@ class DocumentLoader:
 
         boto3.setup_default_session(region_name=aws_region)
 
-        aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")
-        aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
-
-        if aws_access_key_id is not None and aws_secret_access_key is not None:
+        if os.environ.get("STAGE") == "dev":
             boto3.setup_default_session(
-                aws_access_key_id=aws_access_key_id,
-                aws_secret_access_key=aws_secret_access_key,
+                aws_access_key_id=self.aws_access_key_id,
+                aws_secret_access_key=self.aws_secret_access_key,
             )
 
     def load(self):
