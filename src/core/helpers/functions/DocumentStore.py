@@ -14,7 +14,7 @@ class DocumentStore:
             es_index_name: The name of the Elasticsearch index.
         """
         self.es_index_name = es_index_name
-        self.es_client_id = os.environ.get("ES_CLIENT_ID")
+        self.es_cloud_id = os.environ.get("ES_CLOUD_ID")
         self.es_client_secret = os.environ.get("ES_CLIENT_SECRET")
         self.es_url = (
             f"http://localhost:{os.environ.get('ES_PORT', '9200')}"
@@ -43,7 +43,7 @@ class DocumentStore:
             else:
                 ElasticsearchStore.from_documents(
                     documents=documents,
-                    es_cloud_id=self.es_client_id,
+                    es_cloud_id=self.es_cloud_id,
                     es_api_key=self.es_client_secret,
                     index_name=self.es_index_name,
                     embedding=embedding,
@@ -68,7 +68,7 @@ class DocumentStore:
                 )
             else:
                 db = ElasticsearchStore(
-                    es_cloud_id=self.es_client_id,
+                    es_cloud_id=self.es_cloud_id,
                     es_api_key=self.es_client_secret,
                     index_name=self.es_index_name,
                     embedding=embedding,
