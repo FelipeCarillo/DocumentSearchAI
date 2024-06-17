@@ -37,11 +37,14 @@ class IacStack(Stack):
 
         # Add the Lambda integration
         api_gateway_stack.add_lambda_integration(
-            "list_files", lambda_stack.list_files, "GET"
+            "list_files", lambda_stack.list_files, lambda_stack.authorizer, "GET"
         )
         api_gateway_stack.add_lambda_integration(
-            "document_search", lambda_stack.document_search, "GET"
+            "document_search",
+            lambda_stack.document_search,
+            lambda_stack.authorizer,
+            "GET",
         )
         api_gateway_stack.add_lambda_integration(
-            "upload_file", lambda_stack.upload_file, "POST"
+            "upload_file", lambda_stack.upload_file, lambda_stack.authorizer, "POST"
         )
