@@ -64,7 +64,6 @@ jobs:
           STACK_NAME: ${{ env.STACK_NAME }}
           ES_API_KEY: ${{ secrets.ES_API_KEY }}
           ES_CLOUD_ID: ${{ secrets.ES_CLOUD_ID }}
-          ES_INDEX_NAME: ${{ secrets.ES_INDEX_NAME }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}

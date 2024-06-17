@@ -19,7 +19,6 @@ ENVIROMMENT = {
     "AWS_BUCKET_NAME": os.environ["AWS_BUCKET_NAME"],
     "ES_API_KEY": os.environ["ES_API_KEY"],
     "ES_CLOUD_ID": os.environ["ES_CLOUD_ID"],
-    "ES_INDEX_NAME": os.environ["ES_INDEX_NAME"],
     "OPENAI_API_KEY": os.environ["OPENAI_API_KEY"],
     "JWT_SECRET": os.environ["JWT_SECRET"],
 }

@@ -26,7 +26,7 @@ def lambda_handler(event, context):
         # Load the text from the input document
         documents = document_loader.load()
 
-        es_index_name = f"{bucket_name}-{object_name}-index"
+        es_index_name = f"{bucket_name}-{object_name.split('.')[0]}-index"
 
         # Create an instance of the DocumentStore class
         document_store = DocumentStore(es_index_name=es_index_name)
