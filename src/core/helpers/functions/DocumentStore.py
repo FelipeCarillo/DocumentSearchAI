@@ -81,3 +81,29 @@ class DocumentStore:
 
         except Exception as e:
             raise e
+
+    def delete(self):
+        """
+        Deletes the index from the Elasticsearch database.
+        args:
+            document_id: The ID of the document to be deleted.
+        """
+        try:
+
+            # Delete the document from the Elasticsearch database
+            if self.es_url:
+                ElasticsearchStore.delete(
+                    ids=[self.es_index_name],
+                    es_url=self.es_url,
+                    index_name=self.es_index_name,
+                )
+            else:
+                ElasticsearchStore.delete(
+                    ids=[self.es_index_name],
+                    es_cloud_id=self.es_cloud_id,
+                    es_api_key=self.es_api_key,
+                    index_name=self.es_index_name,
+                )
+
+        except Exception as e:
+            raise e
