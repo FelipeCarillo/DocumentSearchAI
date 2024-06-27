@@ -105,6 +105,8 @@ class DocumentLoader:
                 temp_file.write(file)
                 temp_file_path = temp_file.name
 
+            temp_file.close()
+
             try:
                 loader = PDFMinerLoader(temp_file_path)
                 docs = loader.load()
@@ -147,27 +149,24 @@ class DocumentLoader:
             )["Body"].read()
 
             # Detect the text in the image
-            response = textract.detect_document_text(Bytes=document_bytes)
+            response = textract.detect_document_text(Document={"Bytes": document_bytes})
 
             text_extracted = ""
             for item in response["Blocks"]:
                 if item["BlockType"] == "LINE":
                     text_extracted += item["Text"] + "\n"
 
-            with NamedTemporaryFile(delete=False, suffix=".txt") as temp_file:
-                temp_file.write(text_extracted.encode("utf-8"))
-                temp_file_path = temp_file.name
-
-            loader = TextLoader(temp_file_path)
-            docs = loader.load()
-
-            for doc in docs:
-                doc.metadata = {
-                    "id": uuid.uuid4().hex,
-                    "bucket_name": self.bucket_name,
-                    "object_name": self.object_name,
-                    "timestamp": datetime.now().isoformat(),
-                }
+            docs = [
+                Document(
+                    page_content=text_extracted,
+                    metadata={
+                        "id": uuid.uuid4().hex,
+                        "bucket_name": self.bucket_name,
+                        "object_name": self.object_name,
+                        "timestamp": datetime.now().isoformat(),
+                    },
+                )
+            ]
 
             return self.__split_documents(docs)
 
@@ -195,11 +194,11 @@ class DocumentLoader:
     @staticmethod
     def __split_documents(docs: List[Document]) -> List[Document]:
         """
-        Splits the documents into chunks of 500 characters with an overlap of 0 characters.
+        Splits the documents into chunks of 1000 characters with an overlap of 0 characters.
         args:
             docs: A list of Documents.
         """
-        text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+        text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
         chunks = text_splitter.split_documents(docs)
 
         return chunks
