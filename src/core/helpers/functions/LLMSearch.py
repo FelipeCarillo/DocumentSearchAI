@@ -21,16 +21,21 @@ class LLMSearch:
         # Create a prompt
         prompt = self.__get_llm_optimizer_configuration()
 
-        # Create a completion with GPT-4o
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": prompt},
-                {"role": "user", "content": query},
-            ],
-        )
+        try:
 
-        return response.choices[0].message.content
+            # Create a completion with GPT-4o
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": prompt},
+                    {"role": "user", "content": query},
+                ],
+            )
+
+            return response.choices[0].message.content
+
+        except Exception as e:
+            raise e
 
     def create_response(self, query: str, results: dict) -> str:
         """
@@ -50,17 +55,22 @@ class LLMSearch:
         # Create a prompt
         prompt = self.__get_llm_search_configuration()
 
-        # Create a completion with GPT-4o
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": prompt},
-                {"role": "system", "content": f"Results: {results}"},
-                {"role": "user", "content": query},
-            ],
-        )
+        try:
 
-        return response.choices[0].message.content
+            # Create a completion with GPT-4o
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": prompt},
+                    {"role": "system", "content": f"Results: {results}"},
+                    {"role": "user", "content": query},
+                ],
+            )
+
+            return response.choices[0].message.content
+
+        except Exception as e:
+            raise e
 
     @staticmethod
     def __get_llm_search_configuration():
@@ -77,7 +87,7 @@ class LLMSearch:
             If you need more information, you can ask for it.
             Respond in the language of the original query.
             """
-        
+
         return rules
 
     @staticmethod
