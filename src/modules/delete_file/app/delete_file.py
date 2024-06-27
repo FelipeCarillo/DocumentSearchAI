@@ -1,5 +1,6 @@
 import os
 
+from src.core.helpers.exeptions.exceptions import UnauthorizedAccess
 from src.core.helpers.functions.S3Manager import S3Manager
 from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.functions.DocumentStore import DocumentStore
@@ -39,9 +40,9 @@ def lambda_handler(event, context):
         document_store.delete()
 
         # Return the response
-        return Created("File uploaded successfully", file).to_dict()
+        return Created("File deleted successfully", file).to_dict()
 
-    except Unauthorized as e:
-        return e.to_dict()
+    except UnauthorizedAccess as e:
+        return Unauthorized(e.message).to_dict()
     except Exception as e:
         return InternalServerError("Error", str(e)).to_dict()
