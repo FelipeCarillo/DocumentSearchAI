@@ -48,13 +48,6 @@ def create_response(response):
     )
 
 
-@app.get("/scan-file")
-def scan_file_route(object: str):
-    event = create_event(object=object)
-    response = scan_file(event, None)
-    return create_response(response)
-
-
 @app.get("/list-files")
 def list_files_route():
     event = create_event()
@@ -62,9 +55,9 @@ def list_files_route():
     return create_response(response)
 
 
-@app.get("/delete-file")
-def delete_file_route(object: str):
-    event = create_event(object=object)
+@app.delete("/delete-file")
+def delete_file_route(file_name: str):
+    event = create_event(params={"file_name": file_name})
     response = delete_file(event, None)
     return create_response(response)
 
@@ -81,12 +74,15 @@ def upload_file_route(file: UploadFile = File(...)):
         },
     )
     response = upload_file(event, None)
-    return create_response(response)
+    try:
+        scan_file(create_event(object=str(file.filename)), None)
+    finally:
+        return create_response(response)
 
 
 @app.get("/document-search")
-def document_search_route(query: str):
-    event = create_event(params={"query": query})
+def document_search_route(query: str, object_name: str):
+    event = create_event(params={"query": query, "object_name": object_name})
     response = document_search(event, None)
     return create_response(response)
 
