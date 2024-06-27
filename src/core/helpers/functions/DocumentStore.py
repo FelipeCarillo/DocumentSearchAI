@@ -92,16 +92,20 @@ class DocumentStore:
 
             # Delete the document from the Elasticsearch database
             if self.es_url:
-                ElasticsearchStore.delete(
-                    ids=[self.es_index_name],
+                ElasticsearchStore(
                     es_url=self.es_url,
+                    index_name=self.es_index_name,
+                ).delete(
+                    ids=[self.es_index_name],
                     index_name=self.es_index_name,
                 )
             else:
-                ElasticsearchStore.delete(
-                    ids=[self.es_index_name],
+                ElasticsearchStore(
                     es_cloud_id=self.es_cloud_id,
                     es_api_key=self.es_api_key,
+                    index_name=self.es_index_name,
+                ).delete(
+                    ids=[self.es_index_name],
                     index_name=self.es_index_name,
                 )
 
