@@ -11,6 +11,12 @@ from langchain_text_splitters import CharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langchain_community.document_loaders import PDFMinerLoader
 
+from src.core.helpers.exeptions.exceptions import (
+    InvalidFileFormat,
+    S3Exeption,
+    S3ObjectNotFound,
+)
+
 
 class DocumentLoader:
     def __init__(
@@ -33,11 +39,15 @@ class DocumentLoader:
 
         boto3.setup_default_session(region_name=aws_region)
 
+        s3 = boto3.client("s3")
         if os.environ.get("STAGE") == "dev":
-            boto3.setup_default_session(
-                aws_access_key_id=self.aws_access_key_id,
-                aws_secret_access_key=self.aws_secret_access_key,
+            s3 = boto3.client(
+                "s3",
+                endpoint_url="http://localhost:9000",
+                aws_access_key_id=os.environ.get("MINIO_ACCESS_KEY"),
+                aws_secret_access_key=os.environ.get("MINIO_SECRET_KEY"),
             )
+        self.s3 = s3
 
     def load(self):
         """
@@ -54,15 +64,14 @@ class DocumentLoader:
         ):
             return self.__load_from_image()
         else:
-            raise Exception("The document type is not supported.")
+            raise InvalidFileFormat(self.object_name.split(".")[-1])
 
     def __load_from_text(self) -> List[Document]:
         """
         Loads the text from the input document and returns the text in a structured format.
         """
         try:
-            s3 = boto3.client("s3")
-            response = s3.get_object(Bucket=self.bucket_name, Key=self.object_name)
+            response = self.s3.get_object(Bucket=self.bucket_name, Key=self.object_name)
             text = response["Body"].read().decode("utf-8")
 
             loader = TextLoader(text)
@@ -80,19 +89,16 @@ class DocumentLoader:
 
         except botocore.exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "NoSuchKey":
-                raise Exception(
-                    "The S3 object does not exist: " + e.response["Error"]["Message"]
-                )
+                raise S3ObjectNotFound(e.response["Error"]["Message"])
             else:
-                raise Exception("An error occurred: " + e.response["Error"]["Message"])
+                raise S3Exeption(e.response["Error"]["Message"])
 
     def __load_from_pdf(self) -> List[Document]:
         """
         Loads the text from the input PDF document and returns the text in a structured format.
         """
         try:
-            s3 = boto3.client("s3")
-            response = s3.get_object(Bucket=self.bucket_name, Key=self.object_name)
+            response = self.s3.get_object(Bucket=self.bucket_name, Key=self.object_name)
             file = response["Body"].read()
 
             with NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
@@ -118,11 +124,9 @@ class DocumentLoader:
 
         except botocore.exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "NoSuchKey":
-                raise Exception(
-                    "The S3 object does not exist: " + e.response["Error"]["Message"]
-                )
+                raise S3ObjectNotFound(e.response["Error"]["Message"])
             else:
-                raise Exception("An error occurred: " + e.response["Error"]["Message"])
+                raise S3Exeption(e.response["Error"]["Message"])
 
     def __load_from_image(self) -> List[Document]:
         """
@@ -130,11 +134,21 @@ class DocumentLoader:
         """
         try:
             textract = boto3.client("textract")
-            response = textract.detect_document_text(
-                Document={
-                    "S3Object": {"Bucket": self.bucket_name, "Name": self.object_name}
-                }
-            )
+            if os.environ.get("STAGE") == "dev":
+                textract = boto3.client(
+                    "textract",
+                    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+                    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+                )
+
+            # Get the image from the S3 bucket
+            document_bytes = self.s3.get_object(
+                Bucket=self.bucket_name, Key=self.object_name
+            )["Body"].read()
+
+            # Detect the text in the image
+            response = textract.detect_document_text(Bytes=document_bytes)
+
             text_extracted = ""
             for item in response["Blocks"]:
                 if item["BlockType"] == "LINE":
