@@ -3,7 +3,7 @@ import os
 from src.core.helpers.functions.S3Manager import S3Manager
 from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.functions.DocumentStore import DocumentStore
-from src.core.helpers.http.http import (
+from src.core.helpers.http.http_codes import (
     HTTPRequest,
     Created,
     InternalServerError,

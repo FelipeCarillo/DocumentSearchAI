@@ -1,3 +1,4 @@
+import os
 import boto3
 import base64
 
@@ -5,39 +6,50 @@ import base64
 class S3Manager:
     def __init__(self, bucket_name):
         self.bucket_name = bucket_name
-        self.s3 = boto3.client("s3")
+        s3 = boto3.client("s3")
+        if os.environ.get("STAGE") == "dev":
+            s3 = boto3.client(
+                "s3",
+                endpoint_url="http://localhost:9000",
+                aws_access_key_id=os.environ.get("MINIO_ACCESS_KEY"),
+                aws_secret_access_key=os.environ.get("MINIO_SECRET_KEY"),
+            )
+        self.s3 = s3
 
     def list_files(self):
         """
         This function is responsible for listing the files in the S3 bucket.
         """
-        response = self.s3.list_objects(
-            Bucket=self.bucket_name,
-        )
+        try:
+            response = self.s3.list_objects(
+                Bucket=self.bucket_name,
+            )
 
-        files = []
-        if "Contents" in response:
-            for file in response["Contents"]:
-                file_name = file["Key"].split("/")[-1]
-                file_type = file_name.split(".")[-1]
-                file_timestamp = file["LastModified"].isoformat()
-                url = self.__generate_presigned_url(file_name)
-                files.append(
-                    {
-                        "name": file_name,
-                        "type": file_type,
-                        "url": url,
-                        "timestamp": file_timestamp,
-                    }
-                )
+            files = []
+            if "Contents" in response:
+                for file in response["Contents"]:
+                    file_name = file["Key"].split("/")[-1]
+                    file_type = file_name.split(".")[-1]
+                    file_timestamp = file["LastModified"].isoformat()
+                    url = self.__generate_presigned_url(file_name)
+                    files.append(
+                        {
+                            "name": file_name,
+                            "type": file_type,
+                            "url": url,
+                            "timestamp": file_timestamp,
+                        }
+                    )
 
-        return files
+            return files
+        except Exception as e:
+            raise e
 
     def upload_file(self, file_name, file_body, content_type):
         """
         This function is responsible for uploading a file to the S3 bucket.
         """
-        
+
         file_body = file_body.split(",")[-1]
 
         self.s3.put_object(

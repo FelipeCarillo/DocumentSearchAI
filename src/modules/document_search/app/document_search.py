@@ -1,9 +1,15 @@
 import os
 
+from src.core.helpers.exeptions.exceptions import UnauthorizedAccess
 from src.core.helpers.functions.LLMSearch import LLMSearch
 from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.functions.DocumentStore import DocumentStore
-from src.core.helpers.http.http import HTTPRequest, OK, InternalServerError, Unauthorized
+from src.core.helpers.http.http_codes import (
+    HTTPRequest,
+    OK,
+    InternalServerError,
+    Unauthorized,
+)
 
 
 def lambda_handler(event, context):
@@ -26,7 +32,9 @@ def lambda_handler(event, context):
         # Optimize the query
         optimize_query = llm.optimize_query(query)
 
-        es_index_name = f"{os.environ.get("AWS_BUCKET_NAME")}-{object_name}-index"
+        # Get the bucket name from the environment variables
+        bucket_name = os.environ.get("AWS_BUCKET_NAME")
+        es_index_name = f"{bucket_name}-{object_name}-index"
 
         # Create an instance of the DocumentStore class
         document_store = DocumentStore(es_index_name=es_index_name)
@@ -43,9 +51,9 @@ def lambda_handler(event, context):
         }
 
         return OK("Success", data).to_dict()
-    
-    except Unauthorized as e:
-        return e.to_dict()
+
+    except UnauthorizedAccess as e:
+        return Unauthorized("Unauthorized", str(e)).to_dict()
 
     except Exception as e:
         print(f"Error: {e}")
