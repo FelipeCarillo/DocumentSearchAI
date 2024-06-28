@@ -20,15 +20,11 @@ def lambda_handler(event, context):
     try:
         Authorizer().authorize(request.headers["Authorization"])
 
-        print("Passou")
-
         # Get the bucket name from the environment variables
         bucket_name = os.environ.get("AWS_BUCKET_NAME")
 
         # Create an instance of the S3Manager class
         s3_file = S3Manager(bucket_name=bucket_name)
-
-        print("Listing files in the S3 bucket")
 
         # List the files in the S3 bucket
         files = s3_file.list_files()

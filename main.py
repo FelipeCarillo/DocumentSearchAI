@@ -103,7 +103,7 @@ def upload_file_route(file: dict):
     )
     response = upload_file(event, None)
     try:
-        scan_file(create_event(object=file_name), None)
+        scan_file(create_event(object=file.get("file_name")), None)
     finally:
         return create_response(response)
 

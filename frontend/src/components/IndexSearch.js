@@ -80,13 +80,13 @@ export default function IndexSearch({ selectedFile }) {
                 <Card.Body>
                     <ListGroup className="overflow-y-auto" style={{ maxHeight: "38vh" }}>
                         {searchResults.map((result, index) => (
-                            <ListGroup.Item key={index} className="overflow-y-auto" style={{ maxHeight: "10vh" }}>
+                            <ListGroup.Item key={index} className="overflow-y-auto my-1 shadow-sm" style={{ maxHeight: "10vh", height: "10vh" }}>
                                 <div className="d-flex justify-content-between">
                                     <div className="d-flex">
                                         <span>{result.page_content}</span>
                                     </div>
                                     <div>
-                                        <span>{index}</span>
+                                        <span>{index + 1}</span>
                                     </div>
                                 </div>
                             </ListGroup.Item>
