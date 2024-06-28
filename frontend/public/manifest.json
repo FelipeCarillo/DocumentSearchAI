@@ -1,0 +1,9 @@
+{
+  "short_name": "DocumentSearch",
+  "name": "DocumentSearch created by Felipe Carillo",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
