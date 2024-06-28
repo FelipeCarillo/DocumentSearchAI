@@ -1,34 +1,60 @@
-# Meu Projeto de Busca Inteligente
+# DocumentSearchIA
 
-Este repositório contém o código fonte de um software inovador que permite aos usuários fazer o upload de arquivos e realizar buscas indexadas utilizando a biblioteca Langchain e modelos de linguagem (LLM). O projeto está estruturado em microserviços e faz uso das tecnologias AWS, Elastic Search Cloud e AWS Cloud para garantir alta escalabilidade e performance.
+This repository contains the source code for an innovative software created by Felipe Carillo that allows users to upload files and perform indexed searches using the Langchain library and language models (LLM). The project is structured in microservices and utilizes AWS, Elastic Search Cloud, and AWS Cloud technologies to ensure high scalability and performance.
 
-## Visão Geral
+## Overview
 
-Nosso projeto oferece as seguintes funcionalidades:
+Our project offers the following features:
 
-- **Upload de Arquivos**: Permite que os usuários façam o upload de arquivos diversos.
-- **Busca Indexada**: Utiliza Elastic Search para indexar os arquivos e permitir buscas rápidas e precisas.
-- **Integração com LLM**: Usa a biblioteca Langchain para realizar buscas avançadas e fornecer respostas inteligentes.
-- **Microserviços**: Estruturado em microserviços, garantindo escalabilidade e facilidade de manutenção.
-- **AWS Cloud**: Aproveita a infraestrutura da AWS para garantir disponibilidade e segurança.
+- **File Upload**: Allows users to upload various files.
+- **Indexed Search**: Utilizes Elastic Search to index files and enable fast and precise searches.
+- **LLM Integration**: Uses the Langchain library for advanced searches and intelligent responses.
+- **Microservices**: Structured in microservices, ensuring scalability and ease of maintenance.
+- **AWS Cloud**: Leverages AWS infrastructure to ensure availability and security.
+- **Document Scanning**: Supports scanning documents and indexing them for search.
+- **Vector Search**: Uses ChatGPT-4 and vector search for enhanced document retrieval.
 
-## Diagrama da Arquitetura
+## Architecture Diagram
 
-![Diagrama da Arquitetura](caminho/para/imagem.png)
+<div style="display: flex; justify-content: space-between;">
+  <div style="text-align: center;">
+    <img src="https://github.com/FelipeCarillo/DocumentSearchIA/assets/63021830/3a8c95d0-5e15-4dbc-a5aa-62eb0e68f97c" alt="Production Diagram" width="400"/>
+    <p><em>Image 1: Production Diagram</em></p>
+  </div>
+  <div style="text-align: center;">
+    <img src="https://github.com/FelipeCarillo/DocumentSearchIA/assets/63021830/74a24c81-cd18-42d9-8171-a42e79e1c23e" alt="Local Diagram" width="400"/>
+    <p><em>Image 2: Local Diagram</em></p>
+  </div>
+</div>
 
-## Como Rodar Localmente
+## How to Run Locally
 
-Siga os passos abaixo para configurar e rodar o projeto localmente em seu ambiente de desenvolvimento:
+Follow the steps below to set up and run the project locally in your development environment:
 
-### 1. Criar o Ambiente Virtual
+### Prerequisites
 
-Crie um ambiente virtual para isolar as dependências do projeto:
+- Python
+- React
+- Docker
+
+### 1. Clone the Repository
+
+Clone the repository to your local machine:
+
+```bash
+git clone https://github.com/FelipeCarillo/DocumentSearchIA.git
+cd DocumentSearchIA
+```
+
+### 2. Create the Virtual Environment
+
+Create a virtual environment to isolate the project dependencies:
 
 ```bash
 python -m venv venv
 ```
 
-Ative o ambiente virtual:
+Activate the virtual environment:
 
 - **Windows**:
   ```bash
@@ -39,52 +65,96 @@ Ative o ambiente virtual:
   source venv/bin/activate
   ```
 
-### 2. Instalar Dependências
+### 3. Install Dependencies
 
-Instale as dependências necessárias utilizando o `pip`:
+Install the necessary dependencies using `pip`:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
-### 3. Criar o Arquivo `.env`
+### 4. Create the `.env` File
 
-Crie um arquivo `.env` na raiz do projeto e configure as variáveis de ambiente de acordo com o arquivo `.env.example`:
+Create a `.env` file in the root directory of the project and configure the environment variables according to the `.env.example` file:
 
 ```bash
 cp .env.example .env
 ```
 
-Abra o arquivo `.env` e edite os valores conforme necessário.
+Open the `.env` file and edit the values as needed.
 
-### 4. Rodar o Docker Compose
+### 5. Set Up the Frontend
 
-Inicie os serviços necessários utilizando o Docker Compose:
+Navigate to the `./frontend` directory and install the frontend dependencies:
 
 ```bash
+cd frontend
+npm install
+```
+
+Create a `.env` file in the `./frontend` directory and configure the environment variables according to the `.env.example` file:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file as needed.
+
+### 6. Start Docker Services
+
+Navigate back to the root directory and start the required services using Docker Compose:
+
+```bash
+cd ..
 docker-compose up -d
 ```
 
-### 5. Rodar o FastAPI
+### 7. Run FastAPI
 
-Execute o arquivo `main.py` para iniciar o servidor FastAPI:
+Start the FastAPI server:
 
 ```bash
 python main.py
 ```
 
-### 6. Acessar a Documentação
-
-Acesse a documentação interativa da API através do navegador em:
+You can access the interactive API documentation in your browser at:
 
 ```
 http://localhost:8000/docs
 ```
 
-## Contribuição
+### 8. Start the Frontend
 
-Se você deseja contribuir com este projeto, sinta-se à vontade para abrir issues ou pull requests. Toda ajuda é bem-vinda!
+Navigate to the `./frontend` directory and start the React application:
 
-## Licença
+```bash
+cd frontend
+npm start
+```
 
-Este projeto está licenciado sob a [MIT License](LICENSE). 
+## Technologies Used
+
+The DocumentSearchIA project utilizes a variety of modern technologies to achieve its functionality and performance:
+
+- **Langchain**: For advanced search and language model integration.
+- **AWS (Amazon Web Services)**: To leverage cloud infrastructure for scalability and availability.
+- **AWS CDK (Cloud Development Kit)**: For deploying infrastructure as code on AWS.
+- **Continuous Deployment (CD)**: To automate the deployment process.
+- **Python**: The primary programming language for backend development.
+- **JavaScript**: Used for frontend development.
+- **React**: For building the user interface of the application.
+- **Docker**: To containerize the application for consistent environments across development, testing, and production.
+- **GitHub**: For version control and collaborative development.
+- **OpenAI**: To integrate with ChatGPT-4 for intelligent document search.
+- **Elastic Search**: For indexing and searching documents efficiently.
+- **MinIO**: To simulate AWS S3 for local development and testing.
+
+These technologies collectively contribute to the robustness, scalability, and intelligence of the DocumentSearchIA project.
+
+## Contribution
+
+If you want to contribute to this project, feel free to open issues or pull requests. All help is welcome!
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
