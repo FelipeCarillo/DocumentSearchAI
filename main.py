@@ -3,6 +3,7 @@ import jwt
 import dotenv
 import base64
 from fastapi import FastAPI, UploadFile, File, Response
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.modules.scan_file.app.scan_file import lambda_handler as scan_file
 from src.modules.list_files.app.list_files import lambda_handler as list_files
@@ -15,6 +16,14 @@ from src.modules.document_search.app.document_search import (
 dotenv.load_dotenv()
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME")
 Authorization = ""
@@ -62,8 +71,11 @@ def delete_file_route(file_name: str):
     return create_response(response)
 
 
-@app.post("/upload-file")
-def upload_file_route(file: UploadFile = File(...)):
+@app.post(
+    "/upload-file-docs",
+    description="Upload a file to the S3 bucket and scan it. This function is for FastAPI docs.",
+)
+def upload_file_docs_route(file: UploadFile = File(...)):
     file_base64 = base64.b64encode(file.file.read()).decode("utf-8")
 
     event = create_event(
@@ -76,6 +88,22 @@ def upload_file_route(file: UploadFile = File(...)):
     response = upload_file(event, None)
     try:
         scan_file(create_event(object=str(file.filename)), None)
+    finally:
+        return create_response(response)
+
+
+@app.post("/upload-file")
+def upload_file_route(file: dict):
+    event = create_event(
+        body={
+            "file_name": file.get("file_name"),
+            "file_body": file.get("file_body"),
+            "content_type": file.get("content_type"),
+        }
+    )
+    response = upload_file(event, None)
+    try:
+        scan_file(create_event(object=file_name), None)
     finally:
         return create_response(response)
 
