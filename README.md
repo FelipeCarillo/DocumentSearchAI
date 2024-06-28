@@ -1,4 +1,4 @@
-# DocumentSearchIA
+# DocumentSearchAI
 
 This repository contains the source code for an innovative software created by Felipe Carillo that allows users to upload files and perform indexed searches using the Langchain library and language models (LLM). The project is structured in microservices and utilizes AWS, Elastic Search Cloud, and AWS Cloud technologies to ensure high scalability and performance.
 
@@ -18,11 +18,11 @@ Our project offers the following features:
 
 <div style="display: flex; justify-content: space-between;">
   <div style="text-align: center;">
-    <img src="https://github.com/FelipeCarillo/DocumentSearchIA/assets/63021830/3a8c95d0-5e15-4dbc-a5aa-62eb0e68f97c" alt="Production Diagram" width="400"/>
+    <img src="https://github.com/FelipeCarillo/DocumentSearchAI/assets/63021830/3a8c95d0-5e15-4dbc-a5aa-62eb0e68f97c" alt="Production Diagram" width="400"/>
     <p><em>Image 1: Production Diagram</em></p>
   </div>
   <div style="text-align: center;">
-    <img src="https://github.com/FelipeCarillo/DocumentSearchIA/assets/63021830/74a24c81-cd18-42d9-8171-a42e79e1c23e" alt="Local Diagram" width="400"/>
+    <img src="https://github.com/FelipeCarillo/DocumentSearchAI/assets/63021830/74a24c81-cd18-42d9-8171-a42e79e1c23e" alt="Local Diagram" width="400"/>
     <p><em>Image 2: Local Diagram</em></p>
   </div>
 </div>
@@ -42,8 +42,8 @@ Follow the steps below to set up and run the project locally in your development
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/FelipeCarillo/DocumentSearchIA.git
-cd DocumentSearchIA
+git clone https://github.com/FelipeCarillo/DocumentSearchAI.git
+cd DocumentSearchAI
 ```
 
 ### 2. Create the Virtual Environment
@@ -134,7 +134,7 @@ npm start
 
 ## Technologies Used
 
-The DocumentSearchIA project utilizes a variety of modern technologies to achieve its functionality and performance:
+The DocumentSearchAI project utilizes a variety of modern technologies to achieve its functionality and performance:
 
 - **Langchain**: For advanced search and language model integration.
 - **AWS (Amazon Web Services)**: To leverage cloud infrastructure for scalability and availability.
@@ -149,7 +149,7 @@ The DocumentSearchIA project utilizes a variety of modern technologies to achiev
 - **Elastic Search**: For indexing and searching documents efficiently.
 - **MinIO**: To simulate AWS S3 for local development and testing.
 
-These technologies collectively contribute to the robustness, scalability, and intelligence of the DocumentSearchIA project.
+These technologies collectively contribute to the robustness, scalability, and intelligence of the DocumentSearchAI project.
 
 ## Contribution
 
