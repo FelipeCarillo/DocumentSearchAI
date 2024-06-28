@@ -1,5 +1,6 @@
 import os
 
+from src.core.helpers.exeptions.exceptions import UnauthorizedAccess
 from src.core.helpers.functions.S3Manager import S3Manager
 from src.core.helpers.functions.Authorizer import Authorizer
 from src.core.helpers.http.http_codes import (
@@ -30,6 +31,9 @@ def lambda_handler(event, context):
         files = s3_file.list_files()
 
         return OK("Success", files).to_dict()
+
+    except UnauthorizedAccess as e:
+        return Unauthorized("Error", str(e)).to_dict()
 
     except Exception as e:
         print(f"Error: {e}")

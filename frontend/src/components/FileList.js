@@ -22,7 +22,7 @@ export default function FileList({ files = [], setSelectedFile }) {
     }, [fileSearch, files]);
 
     const handleDelete = async (file) => {
-        await axios.delete('http://localhost:8000/delete-file',
+        await axios.delete(process.env.REACT_APP_API_URL + '/delete-file',
             { params: { file_name: file.name } }
         );
         setSelectedFile(null);

@@ -33,7 +33,7 @@ export default function UploadFileModal({ show, setShow }) {
 
             console.log('Uploading file:', body);
             await axios.post(
-                'http://localhost:8000/upload-file',
+                process.env.REACT_APP_API_URL + '/upload-file',
                 body
             );
 

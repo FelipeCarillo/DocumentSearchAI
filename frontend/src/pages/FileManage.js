@@ -13,7 +13,8 @@ export default function FileManage() {
         if (selectedFile === null) {
             const fetchData = async () => {
                 try {
-                    const response = await axios.get("http://localhost:8000/list-files");
+                    console.log(process.env.REACT_APP_API_URL + "/list-files")
+                    const response = await axios.get(process.env.REACT_APP_API_URL + "/list-files");
                     setFiles(response.data.data || []);
                 } catch (error) {
                     console.log("Error: ", error);

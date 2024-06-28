@@ -16,7 +16,7 @@ export default function IndexSearch({ selectedFile }) {
             const object_name = selectedFile.name.split(".")[0];
             console.log("Sending query:", query, "to object:", object_name);
             console.log("Token:", token);
-            const response = await axios.get("http://localhost:8000/document-search", {
+            const response = await axios.get(process.env.REACT_APP_API_URL + "/document-search", {
                 params: { query, object_name }
             });
             setBotResponse(response.data.data.llm_response);
