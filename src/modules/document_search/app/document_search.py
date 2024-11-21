@@ -39,6 +39,8 @@ def lambda_handler(event, context):
         # Create an instance of the DocumentStore class
         document_store = DocumentStore(es_index_name=es_index_name)
 
+        x = 2
+
         # Search the Elasticsearch database for the query
         search_results = document_store.search_vector_store(optimize_query)
 
